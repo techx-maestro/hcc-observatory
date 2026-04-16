@@ -1,0 +1,269 @@
+groups:
+# =============================================================================
+# Target liveness — the "is the scraper even talking to the thing" class
+# =============================================================================
+  - name: targets
+    interval: 1m
+    rules:
+      - alert: ScrapeTargetDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Scrape target {{ $labels.job }} on {{ $labels.instance }} is down"
+          description: "Prometheus has been unable to scrape {{ $labels.job }} at {{ $labels.instance }} for 3 minutes.  The service is probably crashed or unreachable."
+
+      - alert: ScrapeTargetDownCritical
+        expr: up == 0
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Scrape target {{ $labels.job }} has been down for 15 minutes"
+          description: "{{ $labels.job }} at {{ $labels.instance }} hasn't responded for a quarter of an hour.  Needs attention."
+
+# =============================================================================
+# Dell iDRAC — hardware health rollups for both servers.  Conventions per
+# homelab memory: health field "OK" is healthy, anything else = problem.
+# PSU health is numeric: 0 = OK, 1 = Warn, 2 = Critical.
+# =============================================================================
+  - name: idrac-hardware
+    interval: 1m
+    rules:
+      - alert: DriveUnhealthy
+        expr: idrac_storage_drive_info{health!~"OK|Unknown|"} == 1
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Drive on {{ $labels.instance }} reporting {{ $labels.health }}"
+          description: "Physical drive {{ $labels.id }} on {{ $labels.instance }} is in health state {{ $labels.health }}.  Replace before it takes the array down."
+
+      - alert: StorageControllerUnhealthy
+        expr: idrac_storage_info{health!~"OK|Unknown|"} == 1
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Storage controller on {{ $labels.instance }} reporting {{ $labels.health }}"
+          description: "Storage subsystem {{ $labels.id }} on {{ $labels.instance }} is in state {{ $labels.health }}."
+
+      - alert: MemoryModuleUnhealthy
+        expr: idrac_memory_module_info{health!~"OK|Unknown|"} == 1
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "DIMM on {{ $labels.instance }} reporting {{ $labels.health }}"
+          description: "Memory module {{ $labels.name }} on {{ $labels.instance }} is in state {{ $labels.health }}."
+
+      - alert: PowerSupplyWarning
+        expr: idrac_power_supply_health > 0 and idrac_power_supply_health < 2
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "PSU on {{ $labels.instance }} reporting warning"
+          description: "Power supply {{ $labels.psu_id }} on {{ $labels.instance }} is in warning state.  Could be a mains glitch or a failing PSU — check both."
+
+      - alert: PowerSupplyCritical
+        expr: idrac_power_supply_health >= 2
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "PSU on {{ $labels.instance }} reporting CRITICAL"
+          description: "Power supply {{ $labels.psu_id }} on {{ $labels.instance }} is in a critical state.  Redundancy is compromised; replace immediately."
+
+      - alert: CpuTempHigh
+        expr: idrac_sensors_temperature{name=~".*CPU.*|.*Proc.*"} > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "{{ $labels.name }} on {{ $labels.instance }} hot — {{ $value | printf \"%.0f\" }}°C"
+          description: "CPU sensor reads over 80°C.  Check airflow and fans."
+
+      - alert: CpuTempCritical
+        expr: idrac_sensors_temperature{name=~".*CPU.*|.*Proc.*"} > 92
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "{{ $labels.name }} on {{ $labels.instance }} CRITICAL — {{ $value | printf \"%.0f\" }}°C"
+          description: "CPU sensor over 92°C — thermal shutdown imminent."
+
+      - alert: InletTempHigh
+        expr: idrac_sensors_temperature{name=~".*Inlet.*|.*Ambient.*"} > 35
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Rack inlet on {{ $labels.instance }} at {{ $value | printf \"%.0f\" }}°C"
+          description: "Inlet/ambient temperature is over 35°C.  Rack ventilation may be compromised."
+
+      - alert: FansScreaming
+        expr: max by (instance) (idrac_sensors_fan_speed) > 18000
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Fans on {{ $labels.instance }} running at >18k RPM"
+          description: "Highest fan on this host is pegged above 18k RPM — something is running hot or a sensor is stuck.  Worth investigating."
+
+# =============================================================================
+# RPi (node_exporter) — disk/memory/load on the monitoring stack host
+# =============================================================================
+  - name: rpi-node
+    interval: 1m
+    rules:
+      - alert: DiskAlmostFull
+        expr: (1 - node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs"}) > 0.90
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "{{ $labels.mountpoint }} on {{ $labels.instance }} is {{ $value | printf \"%.0f%%\" }} full"
+          description: "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} is over 90% full."
+
+      - alert: DiskCritical
+        expr: (1 - node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs"}) > 0.97
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "{{ $labels.mountpoint }} on {{ $labels.instance }} at {{ $value | printf \"%.0f%%\" }} — CRITICAL"
+          description: "{{ $labels.mountpoint }} on {{ $labels.instance }} is over 97% full — services will start failing."
+
+      - alert: MemoryPressureHigh
+        expr: (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 0.95
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memory on {{ $labels.instance }} over 95%"
+          description: "Available memory on {{ $labels.instance }} is below 5% and has been for 10 minutes.  Something might be leaking."
+
+      - alert: LoadAverageHigh
+        expr: node_load5 > 8
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "5-min load on {{ $labels.instance }} = {{ $value | printf \"%.1f\" }}"
+          description: "Sustained high load on a 4-core RPi.  Something is pegging the CPU."
+
+      - alert: HostJustRebooted
+        expr: (time() - node_boot_time_seconds) < 300
+        for: 0s
+        labels:
+          severity: info
+        annotations:
+          summary: "{{ $labels.instance }} rebooted moments ago"
+          description: "Host came up less than 5 minutes ago — expected if you planned it, concerning if you didn't."
+
+# =============================================================================
+# NVIDIA GPU (PER730XD via ollama-exporter)
+# =============================================================================
+  - name: nvidia-gpu
+    interval: 1m
+    rules:
+      - alert: GpuTempHigh
+        expr: nvidia_gpu_temperature_celsius > 82
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "GPU on {{ $labels.instance }} at {{ $value | printf \"%.0f\" }}°C"
+          description: "GPU temperature over 82°C sustained.  Check fans and airflow."
+
+      - alert: GpuTempCritical
+        expr: nvidia_gpu_temperature_celsius > 90
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "GPU on {{ $labels.instance }} CRITICAL — {{ $value | printf \"%.0f\" }}°C"
+          description: "GPU over 90°C — driver will throttle or shut down."
+
+      - alert: GpuMemoryNearFull
+        expr: nvidia_gpu_memory_used_percent > 95
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "GPU VRAM on {{ $labels.instance }} at {{ $value | printf \"%.0f%%\" }}"
+          description: "GPU memory over 95% used.  Models may fail to load."
+
+# =============================================================================
+# MikroTik router (mktxp)
+# =============================================================================
+  - name: router
+    interval: 1m
+    rules:
+      - alert: RouterCpuHigh
+        expr: mktxp_system_cpu_load > 80
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RB3011 CPU at {{ $value | printf \"%.0f%%\" }}"
+          description: "Router CPU sustained over 80% for 10 minutes.  Firewall or CAPsMAN may be struggling."
+
+      - alert: RouterMemoryLow
+        expr: mktxp_system_free_memory < 50 * 1024 * 1024
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RB3011 free memory below 50 MB"
+          description: "Router has less than 50 MB free.  Memory leak or runaway script."
+
+      - alert: InterfaceErrorsRising
+        expr: rate(mktxp_interface_rx_error_total{name!~"ether9-BDR|sfp1|back-to-home-vpn"}[5m])
+            + rate(mktxp_interface_tx_error_total{name!~"ether9-BDR|sfp1|back-to-home-vpn"}[5m]) > 1
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Interface {{ $labels.name }} has sustained packet errors"
+          description: "More than 1 error per second on {{ $labels.name }} for 10 minutes.  Cable, SFP, or peer issue."
+
+      # Exclude interfaces that are legitimately-off often:
+      #   ether9-BDR — Bluray player, frequently powered off
+      #   sfp1       — empty SFP cage
+      #   back-to-home-vpn — intermittent on-demand VPN link
+      - alert: InterfaceDown
+        expr: mktxp_interface_running{name!~"ether9-BDR|sfp1|back-to-home-vpn"} == 0
+              unless on(name) mktxp_interface_disabled{name!~"ether9-BDR|sfp1|back-to-home-vpn"} == 1
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "Interface {{ $labels.name }} is down (not disabled)"
+          description: "{{ $labels.name }} is not running but not administratively disabled either — link-layer issue."
+
+# =============================================================================
+# Pi-hole (extras beyond the existing PiholeExporterStuck / PiholeDown)
+# =============================================================================
+  - name: pihole-extras
+    interval: 2m
+    rules:
+      - alert: PiholeBlocklistShrunk
+        expr: pihole_domains_being_blocked < (pihole_domains_being_blocked offset 1h) * 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pi-hole blocklist shrunk more than 50% in the last hour"
+          description: "Domain count dropped by more than half within an hour.  Gravity may have broken again (see project_pihole.md re: 2026-04-13 adlist wipe)."
+
+      - alert: PiholeDnsTrafficStalled
+        expr: increase(pihole_dns_queries_today[10m]) == 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Pi-hole has served no DNS queries for 10 minutes"
+          description: "Query counter hasn't incremented — either no clients are using Pi-hole, or DNS is being intercepted/bypassed elsewhere."

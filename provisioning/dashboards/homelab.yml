@@ -1,0 +1,16 @@
+# Grafana dashboard provider — file-based, rescans every 30s.
+# Mount this repo's provisioning/ at /etc/grafana/provisioning (ro).
+
+apiVersion: 1
+
+providers:
+  - name: 'HCC Observatory'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards/json
+      foldersFromFilesStructure: false

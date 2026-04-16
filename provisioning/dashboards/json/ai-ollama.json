@@ -1,0 +1,1050 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "#88C0D0",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Local AI inference — Ollama models, GPU telemetry, VRAM allocation",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [
+    {
+      "icon": "external link",
+      "targetBlank": true,
+      "title": "\ud83e\udd16 Ollama API",
+      "tooltip": "Ollama local API",
+      "type": "link",
+      "url": "http://10.10.10.2:11434"
+    },
+    {
+      "icon": "external link",
+      "targetBlank": true,
+      "title": "\ud83d\udcca Exporter Metrics",
+      "tooltip": "Raw Prometheus metrics",
+      "type": "link",
+      "url": "http://10.10.10.2:9401/metrics"
+    },
+    {
+      "icon": "dashboard",
+      "targetBlank": false,
+      "title": "\ud83d\udcca Dell Servers \u2014 iDRAC",
+      "type": "link",
+      "url": "/d/idrac-dual-command-center"
+    },
+    {
+      "icon": "dashboard",
+      "targetBlank": false,
+      "title": "\ud83d\udcca MikroTik Router \u2014 RB3011",
+      "type": "link",
+      "url": "/d/mikrotik-mktxp"
+    },
+    {
+      "icon": "dashboard",
+      "targetBlank": false,
+      "title": "\ud83d\udcca Raspberry Pi \u2014 Monitoring Stack",
+      "type": "link",
+      "url": "/d/rpi-unified"
+    },
+    {
+      "icon": "dashboard",
+      "targetBlank": false,
+      "title": "\ud83d\udcca Homelab Logs",
+      "type": "link",
+      "url": "/d/homelab-log-intelligence"
+    },
+    {
+      "icon": "dashboard",
+      "targetBlank": false,
+      "title": "\ud83d\udcca Prometheus \u2014 Scrape Health",
+      "type": "link",
+      "url": "/d/prometheus-health"
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "panels": [],
+      "title": "\ud83e\udd16 OLLAMA SERVICE STATUS",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "text", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "text", "value": 0 }] },
+          "unit": "dateTimeAsLocalNoDateIfToday"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "id": 2,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 42 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "time() * 1000", "instant": true, "legendFormat": "", "range": false, "refId": "A" }
+      ],
+      "title": "",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [
+            { "options": { "0": { "color": "#BF616A", "text": "DOWN" }, "1": { "color": "#A3BE8C", "text": "ONLINE" } }, "type": "value" }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "#BF616A", "value": null }, { "color": "#A3BE8C", "value": 1 }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 36 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "ollama_up{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "", "range": false, "refId": "A" }
+      ],
+      "title": "Ollama Service",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "#88C0D0", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "#88C0D0", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 3, "x": 8, "y": 1 },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 42 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "ollama_models_installed{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "", "range": false, "refId": "A" }
+      ],
+      "title": "Models Installed",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "#00B7FF", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "#00B7FF", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 3, "x": 11, "y": 1 },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 42 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "ollama_models_loaded{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "", "range": false, "refId": "A" }
+      ],
+      "title": "Models Loaded",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "text", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "text", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 3, "x": 14, "y": 1 },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "Value", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 28 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "ollama_info{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "{{version}}", "range": false, "refId": "A" }
+      ],
+      "title": "Ollama Version",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "text", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "text", "value": null }] }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 7, "x": 17, "y": 1 },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "Value", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 28 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_info{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "{{name}} ({{pstate}})", "range": false, "refId": "A" }
+      ],
+      "title": "GPU",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 10,
+      "panels": [],
+      "title": "\ud83c\udfae GPU TELEMETRY \u2014 GTX 1070",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "max": 100,
+          "min": 0,
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "#A3BE8C", "value": null },
+            { "color": "#EBCB8B", "value": 70 },
+            { "color": "#BF616A", "value": 90 }
+          ]},
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 6, "w": 4, "x": 0, "y": 6 },
+      "id": 11,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_memory_used_percent{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "VRAM %", "range": false, "refId": "A" }
+      ],
+      "title": "VRAM Used %",
+      "type": "gauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "max": 100,
+          "min": 0,
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "#A3BE8C", "value": null },
+            { "color": "#EBCB8B", "value": 70 },
+            { "color": "#BF616A", "value": 90 }
+          ]},
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 6, "w": 4, "x": 4, "y": 6 },
+      "id": 12,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_utilization_percent{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "GPU %", "range": false, "refId": "A" }
+      ],
+      "title": "GPU Utilization",
+      "type": "gauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "max": 95,
+          "min": 20,
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "#A3BE8C", "value": null },
+            { "color": "#EBCB8B", "value": 65 },
+            { "color": "#BF616A", "value": 80 }
+          ]},
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 6, "w": 4, "x": 8, "y": 6 },
+      "id": 13,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_temperature_celsius{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "Temp", "range": false, "refId": "A" }
+      ],
+      "title": "GPU Temperature",
+      "type": "gauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "max": 100,
+          "min": 0,
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "#A3BE8C", "value": null },
+            { "color": "#EBCB8B", "value": 80 },
+            { "color": "#BF616A", "value": 95 }
+          ]},
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 6, "w": 4, "x": 12, "y": 6 },
+      "id": 14,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_fan_speed_percent{job=\"ollama-exporter\"}", "instant": true, "legendFormat": "Fan %", "range": false, "refId": "A" }
+      ],
+      "title": "Fan Speed",
+      "type": "gauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "#00B7FF", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "#00B7FF", "value": null }] },
+          "unit": "watt"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 4, "x": 16, "y": 6 },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 36 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_power_draw_watts{job=\"ollama-exporter\"}", "instant": false, "legendFormat": "Power", "range": true, "refId": "A" }
+      ],
+      "title": "Power Draw",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "#88C0D0", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "#88C0D0", "value": null }] },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 4, "x": 20, "y": 6 },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 36 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_memory_used_bytes{job=\"ollama-exporter\"} / 1048576", "instant": true, "legendFormat": "Used", "range": false, "refId": "A" }
+      ],
+      "title": "VRAM Used",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "#B986F2", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "#B986F2", "value": null }] },
+          "unit": "rotmhz"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 4, "x": 16, "y": 9 },
+      "id": 17,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 36 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_clock_graphics_mhz{job=\"ollama-exporter\"}", "instant": false, "legendFormat": "Core", "range": true, "refId": "A" }
+      ],
+      "title": "Core Clock",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "fixedColor": "#88C0D0", "mode": "fixed" },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "#88C0D0", "value": null }] },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 3, "w": 4, "x": 20, "y": 9 },
+      "id": 18,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["last"], "fields": "", "values": false },
+        "showPercentChange": false,
+        "text": { "valueSize": 36 },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_memory_free_bytes{job=\"ollama-exporter\"} / 1048576", "instant": true, "legendFormat": "Free", "range": false, "refId": "A" }
+      ],
+      "title": "VRAM Free",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 12 },
+      "id": 20,
+      "panels": [],
+      "title": "\ud83e\udde0 MODEL INVENTORY",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed" },
+          "custom": {
+            "align": "center",
+            "cellOptions": { "type": "auto" },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "text", "value": null }] }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Model" },
+            "properties": [
+              { "id": "custom.width", "value": 320 },
+              { "id": "custom.align", "value": "left" },
+              { "id": "color", "value": { "fixedColor": "#00B7FF", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Family" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "color", "value": { "fixedColor": "#B986F2", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Parameters" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "color", "value": { "fixedColor": "#88C0D0", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Quantization" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "color", "value": { "fixedColor": "#EBCB8B", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Size" },
+            "properties": [
+              { "id": "custom.width", "value": 120 },
+              { "id": "unit", "value": "decbytes" }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 13 },
+      "id": 21,
+      "options": {
+        "cellHeight": "md",
+        "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+        "showHeader": true,
+        "sortBy": [{ "desc": true, "displayName": "Size" }]
+      },
+      "targets": [
+        {
+          "expr": "ollama_model_size_bytes{job=\"ollama-exporter\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Installed Models",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "instance": true,
+              "job": true
+            },
+            "renameByName": {
+              "Value": "Size",
+              "model": "Model",
+              "family": "Family",
+              "parameters": "Parameters",
+              "quantization": "Quantization"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 19 },
+      "id": 30,
+      "panels": [],
+      "title": "\u26a1 ACTIVE INFERENCE",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "fixed" },
+          "custom": {
+            "align": "center",
+            "cellOptions": { "type": "auto" },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "text", "value": null }] }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Model" },
+            "properties": [
+              { "id": "custom.width", "value": 320 },
+              { "id": "custom.align", "value": "left" },
+              { "id": "color", "value": { "fixedColor": "#00B7FF", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "VRAM" },
+            "properties": [
+              { "id": "unit", "value": "decbytes" },
+              { "id": "color", "value": { "fixedColor": "#FF00B2", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "RAM" },
+            "properties": [
+              { "id": "unit", "value": "decbytes" },
+              { "id": "color", "value": { "fixedColor": "#B986F2", "mode": "fixed" } },
+              { "id": "custom.cellOptions", "value": { "type": "color-text" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 5, "w": 12, "x": 0, "y": 20 },
+      "id": 31,
+      "options": {
+        "cellHeight": "md",
+        "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "expr": "ollama_model_vram_bytes{job=\"ollama-exporter\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "",
+          "range": false,
+          "refId": "VRAM"
+        },
+        {
+          "expr": "ollama_model_ram_bytes{job=\"ollama-exporter\"}",
+          "format": "table",
+          "instant": true,
+          "legendFormat": "",
+          "range": false,
+          "refId": "RAM"
+        }
+      ],
+      "title": "Loaded Models \u2014 Memory Allocation",
+      "transformations": [
+        {
+          "id": "seriesToColumns",
+          "options": { "byField": "model" }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time 1": true,
+              "Time 2": true,
+              "__name__ 1": true,
+              "__name__ 2": true,
+              "instance 1": true,
+              "instance 2": true,
+              "job 1": true,
+              "job 2": true
+            },
+            "renameByName": {
+              "model": "Model",
+              "Value #VRAM": "VRAM",
+              "Value #RAM": "RAM"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisLabel": "",
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "normal" }
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byRegexp", "options": ".*VRAM.*" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#FF00B2", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byRegexp", "options": ".*RAM.*" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#B986F2", "mode": "fixed" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 5, "w": 12, "x": 12, "y": 20 },
+      "id": 32,
+      "options": {
+        "legend": { "calcs": ["last"], "displayMode": "table", "placement": "right" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        { "expr": "ollama_model_vram_bytes{job=\"ollama-exporter\"}", "legendFormat": "{{model}} VRAM", "refId": "A" },
+        { "expr": "ollama_model_ram_bytes{job=\"ollama-exporter\"}", "legendFormat": "{{model}} RAM", "refId": "B" }
+      ],
+      "title": "Model Memory Over Time",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 25 },
+      "id": 40,
+      "panels": [],
+      "title": "\ud83d\udcc8 GPU HISTORY",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisLabel": "",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "spanNulls": false
+          },
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "GPU Util %" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#00B7FF", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "VRAM %" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#FF00B2", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Mem Ctrl %" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#B986F2", "mode": "fixed" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 26 },
+      "id": 41,
+      "options": {
+        "legend": { "calcs": ["mean", "max", "last"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_utilization_percent{job=\"ollama-exporter\"}", "legendFormat": "GPU Util %", "refId": "A" },
+        { "expr": "nvidia_gpu_memory_used_percent{job=\"ollama-exporter\"}", "legendFormat": "VRAM %", "refId": "B" },
+        { "expr": "nvidia_gpu_memory_utilization_percent{job=\"ollama-exporter\"}", "legendFormat": "Mem Ctrl %", "refId": "C" }
+      ],
+      "title": "GPU Utilization & VRAM",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisLabel": "",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "spanNulls": false
+          },
+          "unit": "celsius"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Temperature" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#EBCB8B", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Fan %" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#88C0D0", "mode": "fixed" } },
+              { "id": "custom.axisPlacement", "value": "right" },
+              { "id": "unit", "value": "percent" }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 26 },
+      "id": 42,
+      "options": {
+        "legend": { "calcs": ["mean", "max", "last"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_temperature_celsius{job=\"ollama-exporter\"}", "legendFormat": "Temperature", "refId": "A" },
+        { "expr": "nvidia_gpu_fan_speed_percent{job=\"ollama-exporter\"}", "legendFormat": "Fan %", "refId": "B" }
+      ],
+      "title": "Temperature & Cooling",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisLabel": "",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "spanNulls": false
+          },
+          "unit": "watt"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Draw" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#00B7FF", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Limit" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#BF616A", "mode": "fixed" } },
+              { "id": "custom.lineStyle", "value": { "dash": [10, 10], "fill": "dash" } },
+              { "id": "custom.fillOpacity", "value": 0 }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 34 },
+      "id": 43,
+      "options": {
+        "legend": { "calcs": ["mean", "max", "last"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_power_draw_watts{job=\"ollama-exporter\"}", "legendFormat": "Draw", "refId": "A" },
+        { "expr": "nvidia_gpu_power_limit_watts{job=\"ollama-exporter\"}", "legendFormat": "Limit", "refId": "B" }
+      ],
+      "title": "Power Consumption",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisLabel": "",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "spanNulls": false
+          },
+          "unit": "rotmhz"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Core Clock" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#B986F2", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Memory Clock" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#FF9900", "mode": "fixed" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 34 },
+      "id": 44,
+      "options": {
+        "legend": { "calcs": ["mean", "max", "last"], "displayMode": "table", "placement": "bottom" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_clock_graphics_mhz{job=\"ollama-exporter\"}", "legendFormat": "Core Clock", "refId": "A" },
+        { "expr": "nvidia_gpu_clock_memory_mhz{job=\"ollama-exporter\"}", "legendFormat": "Memory Clock", "refId": "B" }
+      ],
+      "title": "GPU Clocks",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "${prom_ds}" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisLabel": "",
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "spanNulls": false,
+            "stacking": { "group": "A", "mode": "normal" }
+          },
+          "unit": "decbytes"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "Used" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#FF00B2", "mode": "fixed" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Free" },
+            "properties": [
+              { "id": "color", "value": { "fixedColor": "#A3BE8C", "mode": "fixed" } }
+            ]
+          }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 42 },
+      "id": 45,
+      "options": {
+        "legend": { "calcs": ["mean", "max", "last"], "displayMode": "table", "placement": "right" },
+        "tooltip": { "mode": "multi", "sort": "desc" }
+      },
+      "targets": [
+        { "expr": "nvidia_gpu_memory_used_bytes{job=\"ollama-exporter\"}", "legendFormat": "Used", "refId": "A" },
+        { "expr": "nvidia_gpu_memory_free_bytes{job=\"ollama-exporter\"}", "legendFormat": "Free", "refId": "B" }
+      ],
+      "title": "VRAM Allocation Over Time",
+      "type": "timeseries"
+    }
+  ],
+  "schemaVersion": 40,
+  "tags": ["hcc", "ai", "ollama", "gpu"],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 2,
+        "includeAll": false,
+        "name": "prom_ds",
+        "options": [],
+        "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      }
+    ]
+  },
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "AI Command Center \u2014 Ollama + GPU",
+  "uid": "hcc-ai-ollama",
+  "version": 1
+}

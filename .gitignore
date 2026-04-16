@@ -1,0 +1,20 @@
+# Secrets — renderer auth token, any API keys
+.env
+*.env
+!.env.example
+
+# Rendered dashboard PNGs — tracked, so comment this out for now
+# docs/screenshots/*.png
+
+# Editor cruft
+.DS_Store
+*.swp
+*~
+
+# Grafana DB (if someone dumps it during troubleshooting)
+*.db
+grafana-data/
+
+# Python
+__pycache__/
+*.pyc

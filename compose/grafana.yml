@@ -1,0 +1,37 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    user: "472"
+    env_file: .env
+    environment:
+      GF_RENDERING_SERVER_URL: http://renderer:8081/render
+      GF_RENDERING_CALLBACK_URL: http://grafana:3000/
+      GF_RENDERING_RENDERER_TOKEN: ${GRAFANA_RENDERER_TOKEN:?set GRAFANA_RENDERER_TOKEN in .env}
+      GF_LOG_FILTERS: rendering:debug
+    volumes:
+      - /var/lib/homelab/grafana-data:/var/lib/grafana
+      - /opt/homelab/grafana/provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    networks:
+      - homelab-monitoring
+    depends_on:
+      - renderer
+
+  renderer:
+    image: grafana/grafana-image-renderer:latest
+    container_name: grafana-renderer
+    restart: unless-stopped
+    environment:
+      ENABLE_METRICS: "true"
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: "8081"
+      AUTH_TOKEN: ${GRAFANA_RENDERER_TOKEN:?set GRAFANA_RENDERER_TOKEN in .env}
+    networks:
+      - homelab-monitoring
+
+networks:
+  homelab-monitoring:
+    external: true

@@ -1,0 +1,32 @@
+groups:
+  - name: pihole
+    interval: 1m
+    rules:
+      # Fires when the exporter is reachable (up=1) but no fresh pihole
+      # metrics are coming through — symptom of the 2026-04-13 stuck-state
+      # bug where the exporter process is alive but has silently stopped
+      # authenticating to Pi-hole.  pihole_status absent or stale for 5m
+      # while the exporter itself is up means: `docker restart pihole-exporter`
+      - alert: PiholeExporterStuck
+        expr: up{job="pihole"} == 1 and absent(pihole_status) == 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "pihole-exporter up but producing no metrics"
+          description: "pihole-exporter on {{ $labels.instance }} is listening (up=1) but pihole_status has been missing for 5m. Restart the container: `docker restart pihole-exporter`."
+
+      # Belt-and-braces: pihole_status should be 1 when Pi-hole is serving.
+      # If it's 0, Pi-hole itself is reporting offline.  Guard against
+      # exporter-flap masquerading as Pi-hole-down by also requiring the
+      # exporter's own `up` to be 1 — if up{job=pihole}==0 then pihole_status
+      # is just stale, not actually saying Pi-hole is down, and we'd rather
+      # let PiholeExporterStuck handle that path.
+      - alert: PiholeDown
+        expr: pihole_status == 0 and on(instance) up{job="pihole"} == 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Pi-hole reports itself offline"
+          description: "pihole_status=0 on {{ $labels.instance }} for 2m. DNS resolution may be degraded."
