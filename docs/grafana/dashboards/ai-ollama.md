@@ -4,7 +4,7 @@
 
 **UID:** `hcc-ai-ollama`
 **Live URL:** https://grafana.home/d/hcc-ai-ollama
-**Source JSON:** [`provisioning/dashboards/json/ai-ollama.json`](../../provisioning/dashboards/json/ai-ollama.json)
+**Source JSON:** [`provisioning/dashboards/json/ai-ollama.json`](../../../provisioning/dashboards/json/ai-ollama.json)
 **Data source:** Prometheus (custom `ollama-exporter`)
 
 ## What this is

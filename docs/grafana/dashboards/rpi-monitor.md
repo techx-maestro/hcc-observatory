@@ -4,7 +4,7 @@
 
 **UID:** `rpi-unified`
 **Live URL:** https://grafana.home/d/rpi-unified
-**Source JSON:** [`provisioning/dashboards/json/rpi-monitor.json`](../../provisioning/dashboards/json/rpi-monitor.json)
+**Source JSON:** [`provisioning/dashboards/json/rpi-monitor.json`](../../../provisioning/dashboards/json/rpi-monitor.json)
 **Data sources:** Prometheus (node_exporter · pihole-exporter · cadvisor)
 
 ## What this is

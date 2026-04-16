@@ -4,7 +4,7 @@
 
 **UID:** `mikrotik-mktxp`
 **Live URL:** https://grafana.home/d/mikrotik-mktxp
-**Source JSON:** [`provisioning/dashboards/json/mikrotik-router.json`](../../provisioning/dashboards/json/mikrotik-router.json)
+**Source JSON:** [`provisioning/dashboards/json/mikrotik-router.json`](../../../provisioning/dashboards/json/mikrotik-router.json)
 **Data sources:** Prometheus (mktxp + snmp-exporter RouterOS module)
 
 ## What this is

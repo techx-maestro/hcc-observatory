@@ -4,7 +4,7 @@
 
 **UID:** `idrac-dual-command-center`
 **Live URL:** https://grafana.home/d/idrac-dual-command-center
-**Source JSON:** [`provisioning/dashboards/json/dell-servers.json`](../../provisioning/dashboards/json/dell-servers.json)
+**Source JSON:** [`provisioning/dashboards/json/dell-servers.json`](../../../provisioning/dashboards/json/dell-servers.json)
 **Data sources:** Prometheus (snmp-exporter · dell_idrac module) + Prometheus (idrac_exporter via Redfish) + Loki (iDRAC syslog relay)
 
 ## What this is

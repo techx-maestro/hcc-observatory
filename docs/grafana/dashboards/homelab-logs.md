@@ -4,7 +4,7 @@
 
 **UID:** `homelab-log-intelligence`
 **Live URL:** https://grafana.home/d/homelab-log-intelligence
-**Source JSON:** [`provisioning/dashboards/json/homelab-logs.json`](../../provisioning/dashboards/json/homelab-logs.json)
+**Source JSON:** [`provisioning/dashboards/json/homelab-logs.json`](../../../provisioning/dashboards/json/homelab-logs.json)
 **Data sources:** Loki (primary) + Prometheus (for the upper stat strip)
 
 ## What this is

@@ -4,7 +4,7 @@
 
 **UID:** `prometheus-health`
 **Live URL:** https://grafana.home/d/prometheus-health
-**Source JSON:** [`provisioning/dashboards/json/prometheus-health.json`](../../provisioning/dashboards/json/prometheus-health.json)
+**Source JSON:** [`provisioning/dashboards/json/prometheus-health.json`](../../../provisioning/dashboards/json/prometheus-health.json)
 **Data source:** Prometheus (self-scrape)
 
 ## What this is
