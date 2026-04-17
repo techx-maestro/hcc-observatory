@@ -79,7 +79,7 @@ localStorage, installable to desktop/phone home screen.
 Kotlin + Jetpack Compose + Hilt. Phone app mirrors the dashboard's
 core pages with a single shared `OverviewRepository` polling
 `/api/overview`. Biometric auth on every cold launch. Wear OS
-companion with glanceable PET / FEED tiles and Gotify WebSocket
+companion with glanceable NIGEL / FEED tiles and Gotify WebSocket
 push notifications via a foreground service.
 → [Full section](docs/hcc-android/)
 
@@ -214,7 +214,7 @@ repository are the proprietary property of TechX Maestro. See
 
 The trademarks **TechX Maestro**, **HCC**, **Home Control Center**,
 **Serina**, **Nigel**, and **TechX OS** — along with all associated logos,
-wordmarks, icons, pet sprites, color schemes, and UI visual design — are
+wordmarks, icons, Nigel sprites, color schemes, and UI visual design — are
 trademarks of TechX Maestro.
 
 Third-party components (Grafana, Prometheus, Loki, AdminLTE, gridstack.js,

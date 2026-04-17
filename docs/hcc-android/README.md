@@ -12,7 +12,7 @@ running on a Galaxy S24 and Galaxy Watch 7 Ultra.
 Native mobile surface for the HCC ecosystem. Phone app mirrors the web
 dashboard's core pages (Home, Pi-hole, Servers, Monitor, Control) and
 adds a Serina Feed tile backed by a Gotify WebSocket foreground service.
-Wear OS app is a glanceable companion with pager (PET / FEED / STATUS),
+Wear OS app is a glanceable companion with pager (NIGEL / FEED / STATUS),
 Serina chat, and tile complications.
 
 ## Authentication
@@ -67,11 +67,11 @@ watch tile.
 
 ## Wear OS
 
-- **HOME pager** — PET / FEED / STATUS pages, swipe between
+- **HOME pager** — NIGEL / FEED / STATUS pages, swipe between
 - **CHAT** — Serina conversational view
 - **FEED tile** — glanceable complication showing last 3 Gotify messages,
   5-minute refresh, tap → FEED page
-- **PET tile** — glanceable Serina/Nigel status
+- **NIGEL tile** — glanceable Serina/Nigel status
 - **Push notifications** — via `FeedService` foreground WebSocket,
   auto-starts on boot
 
@@ -84,8 +84,8 @@ watch tile.
 - Data screens are pure `@Composable (onMenu) { ... }` using
   `hiltViewModel<OverviewViewModel>()`
 - Navigation: `ModalNavigationDrawer` with 6 routes in `AppNavHost.kt`
-- `PetRepository` fetches Serina's pet name from `chat.home/api/pet/name`
-  → displayed as `SERINA // <name>` in the PetCard header
+- `NigelRepository` fetches Serina's companion name from `chat.home/api/nigel/name`
+  → displayed as `SERINA // <name>` in the NigelCard header
 
 ## Network
 
