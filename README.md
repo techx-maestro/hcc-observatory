@@ -1,16 +1,31 @@
+<div align="center">
+
 # HCC Observatory
 
 **The visual showcase of the Home Control Center ecosystem.**
 
 HCC (Home Control Center) is a multi-surface home platform by
-[TechX Maestro](https://techxmaestro.com). This repo is a curated tour of
-every visible surface of HCC — dashboards, native apps, custom UIs — with
-every screenshot, every architecture diagram, and a deep-dive for each
-piece.
+[**TechX Maestro**](https://techxmaestro.com). A curated tour of every
+visible surface of HCC — dashboards, native apps, custom UIs — with
+every screenshot, every architecture diagram, and a deep-dive for each piece.
+
+![cyan](https://img.shields.io/badge/palette-%2300B7FF-00B7FF?style=flat-square) ![license](https://img.shields.io/badge/license-proprietary-FF00B2?style=flat-square) ![stack](https://img.shields.io/badge/stack-grafana%20%C2%B7%20prometheus%20%C2%B7%20loki-B986F2?style=flat-square) ![status](https://img.shields.io/badge/status-live-00B7FF?style=flat-square)
+
+</div>
 
 ---
 
 ![HCC Dashboard](docs/hcc-dashboard/screenshots/01-home.png)
+
+<div align="center">
+
+| 7 | 13 | 10 | 3 | 1 |
+|:-:|:-:|:-:|:-:|:-:|
+| Grafana dashboards | HCC web pages | Android screens | Pi-hole theme shots | obsessed human |
+
+*Palette-locked · JetBrains Mono everywhere · LAN-only · zero cloud · built end-to-end by one operator*
+
+</div>
 
 ---
 
@@ -20,6 +35,7 @@ piece.
 |---------|---------|------|
 | **Grafana Stack** | Metrics & log visualization — 7 dashboards (NAD receiver, Dell servers, MikroTik, RPi, Ollama/GPU, logs, Prometheus health) | [docs/grafana/](docs/grafana/) |
 | **HCC Dashboard** | The web UI — Node.js/Express, installable PWA, 11 pages, drag-and-drop layouts, live polling | [docs/hcc-dashboard/](docs/hcc-dashboard/) |
+| **HCC Control** | Native PySide6 Linux desktop app — Pi-hole-style embedded sub-apps per domain (PI-HOLE, SERVERS, NETWORK, AI, CONTROL CENTER, MONITOR, EXTRAS), full NAD remote, Spotify controller, Serina chat pane | *private — in stabilization* |
 | **HCC Android** | Native Kotlin/Compose phone + Wear OS app, biometric auth, Gotify push | [docs/hcc-android/](docs/hcc-android/) |
 | **Pi-hole Theme** | Ground-up rebuild of the Pi-hole v6 admin UI in HCC's visual language | [docs/pihole-theme/](docs/pihole-theme/) |
 
@@ -234,3 +250,18 @@ Chart.js, etc.) retain their original licenses per LICENSE section 4.
 ---
 
 Part of the [TechX Maestro](https://techxmaestro.com) HCC product line.
+
+---
+
+<div align="center">
+
+### Want this for your homelab?
+
+**TechX Maestro** designs and deploys end-to-end homelab, home-theater,
+and networking builds — custom, proprietary, dialed in.
+
+[Get in touch →](https://techxmaestro.com/contact/) · `support@techxmaestro.com`
+
+<sub>Owen Sound, ON · © 2026 TechX Maestro · All rights reserved</sub>
+
+</div>
