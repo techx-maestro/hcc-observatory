@@ -55,6 +55,15 @@ done
 [ -z "$UID_ARG" ] || [ -z "$OUT_ARG" ] && usage
 
 USER_NAME="${GRAFANA_USER:-admin}"
+# Auth resolution order:
+#   1. $GRAFANA_PASS env (CI / shell scripting)
+#   2. ~/.config/techx-os/grafana-pass (user file, chmod 600 — drop the
+#      password here once and unattended regens just work)
+#   3. interactive prompt
+PASS_FILE="${HOME}/.config/techx-os/grafana-pass"
+if [ -z "${GRAFANA_PASS:-}" ] && [ -r "$PASS_FILE" ]; then
+  GRAFANA_PASS="$(head -n1 "$PASS_FILE")"
+fi
 if [ -z "${GRAFANA_PASS:-}" ]; then
   read -rsp "Grafana password for ${USER_NAME}: " GRAFANA_PASS
   echo

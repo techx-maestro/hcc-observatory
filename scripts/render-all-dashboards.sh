@@ -12,6 +12,11 @@ mkdir -p "$OUT_DIR"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Auth resolution mirrors grafana-screenshot.sh (env → pass file → prompt).
+PASS_FILE="${HOME}/.config/techx-os/grafana-pass"
+if [ -z "${GRAFANA_PASS:-}" ] && [ -r "$PASS_FILE" ]; then
+  GRAFANA_PASS="$(head -n1 "$PASS_FILE")"
+fi
 if [ -z "${GRAFANA_PASS:-}" ]; then
   read -rsp "Grafana password for admin: " GRAFANA_PASS
   echo
