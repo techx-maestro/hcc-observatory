@@ -5,17 +5,21 @@ deployed as a PWA, installable to phone/desktop home screens, serving
 the full homelab command-center UI from a Raspberry Pi.
 
 **Repo:** https://github.com/xbc4000/hcc-dashboard (private)
-**Live URL:** https://hcc.home (Caddy → 10.40.40.2:3080)
-**Stack:** Node.js 20 + Express · vanilla HTML/CSS/JS · gridstack.js · Docker · host networking · bcrypt session auth
-**Deploy target:** Raspberry Pi 4B
+**Live URL:** https://hcc.home (Caddy → 10.20.20.3:3080 on PER630)
+**Stack:** Node.js 20 + Express · vanilla HTML/CSS/JS · gridstack.js · Docker · host networking · bcrypt session auth · session-file-store · TLS-everywhere
+**Deploy target:** PER630 (Dell PowerEdge R630, migrated from Raspberry Pi 4B 2026-04-15)
 
 ## What it does
 
 Polls every subsystem in the homelab every 10 seconds (Pi-hole, Prometheus
 iDRAC metrics, RouterOS API, Grafana health, Ollama + GPU, iDRAC/Portainer/
 AMP liveness checks), fuses the results into a single `/api/overview`
-response, and renders 15+ panels across 11 pages with drag-and-drop layout
-customization on the HOME page.
+response, and renders 15+ panels across multiple pages with drag-and-drop
+layout customization on the HOME page.
+
+Hardened 2026-04-11: TLS-everywhere, `session-file-store` for persistent
+sessions across container restarts, fail-fast startup (refuses to boot if
+any HMAC secret / TLS cert is missing instead of silently degrading).
 
 ## Screens
 

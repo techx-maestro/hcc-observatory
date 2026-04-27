@@ -101,6 +101,23 @@ Matches the HCC desktop visual language — cyan-dominant palette, mono
 typography, dense information display. Sidebar particles and topology
 elements are the phone-adapted version of the Pi-hole theme's sidebar.
 
+## Sibling modules in the same repo
+
+The `hcc-android` repo also hosts two WristCord modules — a Wear OS
+Discord client and its phone companion. Separate `applicationId`s,
+shared infrastructure (build tooling, palette, Compose theme).
+
+| Folder | Target | applicationId |
+|---|---|---|
+| `wristcord/` | Wear OS (on the wrist) | `com.techxmaestro.hcc.wristcord` |
+| `wristcord-phone/` | Android phone companion | `com.techxmaestro.hcc.wristcord.phone` |
+
+Status: Phase 1 complete (REST + gateway connected; voice stubbed for
+Phase 3). The Discord API only accepts Discord tokens — token
+acquisition UX is the hard problem the phone companion solves
+(paste-from-Equicord login on the phone, eventually pushed to the
+watch via Wear Data Layer).
+
 ## Related
 
 - [HCC Dashboard](../hcc-dashboard/) — web backend powering
