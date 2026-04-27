@@ -37,6 +37,7 @@ every screenshot, every architecture diagram, and a deep-dive for each piece.
 | **HCC Dashboard** | The web UI — Node.js/Express, installable PWA, 11 pages, drag-and-drop layouts, live polling | [docs/hcc-dashboard/](docs/hcc-dashboard/) |
 | **HCC Control** | Native PySide6 Linux desktop app — Pi-hole-style embedded sub-apps per domain (PI-HOLE, SERVERS, NETWORK, AI, CONTROL CENTER, MONITOR, EXTRAS), full NAD remote, Spotify controller, Serina chat pane | *private — in stabilization* |
 | **HCC Android** | Native Kotlin/Compose phone + Wear OS app, biometric auth, Gotify push | [docs/hcc-android/](docs/hcc-android/) |
+| **HCC NAD** | Native Rust + GTK4 fullscreen NAD T748 AVR remote with Spotify controller — orientation-aware (landscape + portrait) | [docs/hcc-nad/](docs/hcc-nad/) |
 | **Pi-hole Theme** | Ground-up rebuild of the Pi-hole v6 admin UI in HCC's visual language | [docs/pihole-theme/](docs/pihole-theme/) |
 
 ---
@@ -100,6 +101,19 @@ push notifications via a foreground service.
 → [Full section](docs/hcc-android/)
 
 ![HCC Android Home](docs/hcc-android/screenshots/20-home.png)
+
+### HCC NAD — fullscreen AVR remote
+Native Rust + GTK4 fullscreen remote for the NAD T748 receiver, with
+a Spotify controller built in. Two orientation-aware layouts auto-swap
+when the TX1Y4 ThinkPad rotates into tablet mode — wide landscape for
+the rack-mounted PER730XD workstation, narrow portrait for the rotated
+TX. Polls the HCC Spotify Connect bridge + the RS-232 NAD daemon, with
+album-art pre-scaling and ellipsize-clamped picker rows so a long
+playlist name can't push the layout past the window's request.
+→ [Full section](docs/hcc-nad/)
+
+![HCC NAD landscape](docs/hcc-nad/screenshots/01-landscape.png)
+![HCC NAD portrait](docs/hcc-nad/screenshots/02-portrait.png)
 
 ### Pi-hole Theme — custom command-center UI
 ~100 KB CSS + ~70 KB JS loaded into Pi-hole v6 via RouterOS-provisioned
