@@ -4,7 +4,7 @@ The primary web surface of HCC. A single-page Node.js/Express app
 deployed as a PWA, installable to phone/desktop home screens, serving
 the full homelab command-center UI from a Raspberry Pi.
 
-**Repo:** https://github.com/xbc4000/hcc-dashboard (private)
+**Repo:** https://github.com/techx-maestro/hcc-dashboard (private)
 **Live URL:** https://hcc.home (Caddy → 10.20.20.3:3080 on PER630)
 **Stack:** Node.js 20 + Express · vanilla HTML/CSS/JS · gridstack.js · Docker · host networking · bcrypt session auth · session-file-store · TLS-everywhere
 **Deploy target:** PER630 (Dell PowerEdge R630, migrated from Raspberry Pi 4B 2026-04-15)

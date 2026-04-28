@@ -3,7 +3,7 @@
 Native Kotlin/Compose phone + Wear OS app for HCC. v1 shipped 2026-04-15,
 running on a Galaxy S24 and Galaxy Watch 7 Ultra.
 
-**Repo:** https://github.com/xbc4000/hcc-android (private)
+**Repo:** https://github.com/techx-maestro/hcc-android (private)
 **Package:** `com.techxmaestro.hcc` (release) / `com.techxmaestro.hcc.debug` (debug)
 **Stack:** Kotlin · Jetpack Compose · Hilt · OkHttp · Biometric auth · WearableListenerService
 

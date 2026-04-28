@@ -26,4 +26,5 @@ See [LICENSE](LICENSE) for full usage terms.
 
 ## Contact
 
-For licensing, partnership, press, or legal inquiries, contact TechX Maestro.
+For licensing, partnership, press, or legal inquiries, contact TechX Maestro
+at `support@techxmaestro.com`.
