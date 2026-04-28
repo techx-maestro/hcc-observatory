@@ -130,6 +130,8 @@ restarts via a startup script.
 
 Two TechX OS machines (PER730XD daily driver + TX1Y4 laptop) share a single LG SDQHD monitor over DisplayPort. The LG supports Picture-by-Picture mode — physically split into two halves, one per source. Flipping the LG's OSD button between PbP and DualUp Just Works on both hosts: a 1 s pure-poll Hyprland watcher (`techx-monitor-watcher`) reads its own EDID on the owner host, publishes state to a file, and the guest host SSHes in to read it. Bonus: a sibling daemon (`techx-ambient-sync`) reads the LG's built-in ambient-light-sensor output via DDC/CI and mirrors it to every other panel in the rig (LG ultrawide on DDC, laptop internal over SSH+brightnessctl). KDE/kscreen-class behavior in ~220 lines of bash. PbP→DualUp transitions also dodge a hyprland atomic-check rejection bug via a one-shot staged DP-2 modeset.
 
+Capping the family: **HCC monitor widget** — an eww popout (SUPER+M) that lists every detected panel as a row with brightness/volume/ambient controls, regardless of transport. DDC for externals, /sys/class/backlight for the local internal panel, **SSH+brightnessctl over WiFi for the laptop's internal screen** — no DP cable required. Three transports, one JSON shape, one UI. Click +5% on the laptop row from the desktop's popout and the laptop's screen brightens, all over a wireless network connection.
+
 **Source:** [techx-os/docs/multi-host-displays.md](https://github.com/techx-maestro/techx-os/blob/main/docs/multi-host-displays.md)
 
 ---
