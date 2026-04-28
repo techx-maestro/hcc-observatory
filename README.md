@@ -39,6 +39,7 @@ every screenshot, every architecture diagram, and a deep-dive for each piece.
 | **HCC Android** | Native Kotlin/Compose phone + Wear OS app, biometric auth, Gotify push | [docs/hcc-android/](docs/hcc-android/) |
 | **HCC NAD** | Native Rust + GTK4 fullscreen NAD T748 AVR remote with Spotify controller — orientation-aware (landscape + portrait) | [docs/hcc-nad/](docs/hcc-nad/) |
 | **Pi-hole Theme** | Ground-up rebuild of the Pi-hole v6 admin UI in HCC's visual language | [docs/pihole-theme/](docs/pihole-theme/) |
+| **Multi-host displays** | kscreen-equivalent for Hyprland — auto PbP&harr;DualUp toggle on a shared LG, ambient-sensor brightness mirror, and an eww popout that controls every panel in the rig (including the laptop's internal screen wirelessly) | [docs/multi-host-displays/](docs/multi-host-displays/) |
 
 ---
 
@@ -132,7 +133,8 @@ Two TechX OS machines (PER730XD daily driver + TX1Y4 laptop) share a single LG S
 
 Capping the family: **HCC monitor widget** — an eww popout (SUPER+M) that lists every detected panel as a row with brightness/volume/ambient controls, regardless of transport. DDC for externals, /sys/class/backlight for the local internal panel, **SSH+brightnessctl over WiFi for the laptop's internal screen** — no DP cable required. Three transports, one JSON shape, one UI. Click +5% on the laptop row from the desktop's popout and the laptop's screen brightens, all over a wireless network connection.
 
-**Source:** [techx-os/docs/multi-host-displays.md](https://github.com/techx-maestro/techx-os/blob/main/docs/multi-host-displays.md)
+**Source:** [techx-os/docs/multi-host-displays.md](https://github.com/techx-maestro/techx-os/blob/main/docs/multi-host-displays.md) (private)
+&rarr; [Full section](docs/multi-host-displays/)
 
 ---
 
