@@ -8,7 +8,7 @@ The following names, wordmarks, logos, and visual identities are trademarks
 of **TechX Maestro** and may not be used without express written permission:
 
 - **TechX Maestro** &mdash; parent brand
-- **HCC** / **Home Control Center** &mdash; product
+- **HCC** / **Homelab Command Center** &mdash; product
 - **Serina** &mdash; AI assistant sub-product
 - **Nigel** &mdash; Serina's virtual companion
 - **TechX OS** &mdash; Fedora bootc distribution
