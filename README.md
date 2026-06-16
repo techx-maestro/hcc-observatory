@@ -2,9 +2,9 @@
 
 # HCC Observatory
 
-**The visual showcase of the Home Control Center ecosystem.**
+**The visual showcase of the Homelab Command Center ecosystem.**
 
-HCC (Home Control Center) is a multi-surface home platform by
+HCC (Homelab Command Center) is a multi-surface home platform by
 [**TechX Maestro**](https://techxmaestro.com). A curated tour of every
 visible surface of HCC — dashboards, native apps, custom UIs — with
 every screenshot, every architecture diagram, and a deep-dive for each piece.
@@ -254,7 +254,7 @@ All source, configuration, documentation, and visual design in this
 repository are the proprietary property of TechX Maestro. See
 [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
 
-The trademarks **TechX Maestro**, **HCC**, **Home Control Center**,
+The trademarks **TechX Maestro**, **HCC**, **Homelab Command Center**,
 **Serina**, **Nigel**, and **TechX OS** — along with all associated logos,
 wordmarks, icons, Nigel sprites, color schemes, and UI visual design — are
 trademarks of TechX Maestro.
